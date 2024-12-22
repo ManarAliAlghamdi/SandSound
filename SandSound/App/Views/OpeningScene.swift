@@ -2,10 +2,10 @@
 import SwiftUI
 import AVKit
 
-// تخصيص فيديو بدون عناصر تحكم
 struct FullScreenVideoPlayer: UIViewControllerRepresentable {
     let videoName: String
     let videoExtension: String
+    @Binding var isVideoEnded: Bool  // Binding to track video end status
 
     func makeUIViewController(context: Context) -> AVPlayerViewController {
         let controller = AVPlayerViewController()
@@ -15,6 +15,15 @@ struct FullScreenVideoPlayer: UIViewControllerRepresentable {
             let player = AVPlayer(url: url)
             controller.player = player
             controller.showsPlaybackControls = false
+            
+            // Observe when the video ends
+            NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
+                                                   object: player.currentItem,
+                                                   queue: .main) { _ in
+                print("Video has ended")
+                isVideoEnded = true  // Update the binding when video ends
+            }
+            
             player.play()
         }
         
@@ -29,34 +38,41 @@ struct OpeningScene: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                FullScreenVideoPlayer(videoName: "video", videoExtension: "MP4")
-                    .ignoresSafeArea()
-                
-                VStack {
-                    Spacer()
-                    HStack {
+            if !navigateToPlay{
+                ZStack {
+                    FullScreenVideoPlayer(videoName: "video", videoExtension: "MP4", isVideoEnded: $navigateToPlay)
+                        .ignoresSafeArea()
+                    
+                    VStack {
                         Spacer()
-                        Button(action: {
-                            navigateToPlay = true
-                        }) {
-                            Text("Skip")
-                                .font(.title2)
-                                .bold()
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color.black.opacity(0.7))
-                                .cornerRadius(10)
-                                .padding(10)
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                navigateToPlay = true
+                            }) {
+                                Text("Skip")
+                                    .font(.title2)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.black.opacity(0.7))
+                                    .cornerRadius(10)
+                                    .padding(10)
+                            }
+                           
                         }
                     }
                 }
-            }
-            .navigationDestination(isPresented: $navigateToPlay) {
+              
+            }else if navigateToPlay{
                 GameTutorial()
             }
         }
-        .navigationBarBackButtonHidden(true)
-    }
+                .navigationBarBackButtonHidden(true)
+        }
+    
 }
 
+//            .navigationDestination(isPresented: $navigateToPlay) {
+//                GameTut`1orial()
+//            }

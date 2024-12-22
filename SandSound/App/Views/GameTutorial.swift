@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct GameTutorial: View {
-    @ObservedObject var viewModel = GameViewModel(gameDuration: 20, gameMode: .tutorial)
+    @ObservedObject var viewModel = GameViewModel(gameDuration: 10, gameMode: .tutorial)
     
     var body: some View {
         ZStack {
@@ -9,7 +9,7 @@ struct GameTutorial: View {
             VStack {
                 if !viewModel.gameEnds {
                     if viewModel.showLeftArrow {
-                        Image("TestArrow")
+                        Image("leftArrow")
                             .resizable()
                             .frame(width: 200, height: 120)
                             .offset(x: viewModel.leftArrowOffset)
@@ -20,7 +20,7 @@ struct GameTutorial: View {
                             }
                             .transition(.opacity)
                     } else if viewModel.showRightArrow {
-                        Image("TestArrow 2")
+                        Image("rightArrow")
                             .resizable()
                             .frame(width: 200, height: 120)
                             .offset(x: viewModel.rightArrowOffset)

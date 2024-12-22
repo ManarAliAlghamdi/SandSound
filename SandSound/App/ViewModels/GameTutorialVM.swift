@@ -45,12 +45,12 @@ class GameViewModel: ObservableObject {
     // MARK: - Data Models - Tutorial
     let tutorialObstacles: [ObstacleModel] = [
         ObstacleModel(levelNo: 1, obstacleLane: 0, appearenceTime: 3, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
-            ObstacleSound(obstacleSoundName: "leftRick.mp3", laneNo: 0),
-            ObstacleSound(obstacleSoundName: "middleRick.mp3", laneNo: 1),
-            ObstacleSound(obstacleSoundName: "rightRick.mp3", laneNo: 2)
+            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 2)
         ]),
         
-        ObstacleModel(levelNo: 2, obstacleLane: 2, appearenceTime: 15, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
+        ObstacleModel(levelNo: 2, obstacleLane: 2, appearenceTime: 6, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 0),
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 1),
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 2)
@@ -58,8 +58,8 @@ class GameViewModel: ObservableObject {
     ]
     
     let tutorialDialog: [DialogModel] = [
-        DialogModel(dialogSoundName: "tutLeft.wav", dialogApperance: 1),
-        DialogModel(dialogSoundName: "tutRight.wav", dialogApperance: 3),
+        DialogModel(dialogSoundName: "tutLeft.wav", dialogApperance: 3),
+        DialogModel(dialogSoundName: "tutRight.wav", dialogApperance: 6),
     ]
     
     
