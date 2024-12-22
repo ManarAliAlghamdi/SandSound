@@ -11,7 +11,7 @@ import SwiftUI
 struct SandSoundApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            GameTutorial()
         }
     }
 }
