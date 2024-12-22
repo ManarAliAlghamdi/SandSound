@@ -8,6 +8,7 @@ class GameViewModel: ObservableObject {
     @Published var showLeftArrow: Bool = false
     @Published var showRightArrow: Bool = false
     @Published var navigateToContentView = false
+    @Published var navigateToPlay = false
 
     @Published var gameTimeRemaining: TimeInterval
     @Published var gameDuration: TimeInterval
@@ -65,7 +66,7 @@ class GameViewModel: ObservableObject {
     
     // MARK: - Data Models - Game
     let gameObstacles: [ObstacleModel] = [
-        ObstacleModel(levelNo: 0, obstacleLane: 1, appearenceTime: 5, preObstacleSoundDelay: 4, duration: 5, collisionSound: "hit2.mp3", obstacleSounds: [
+        ObstacleModel(levelNo: 0, obstacleLane: 2, appearenceTime: 5, preObstacleSoundDelay: 4, duration: 5, collisionSound: "hit2.mp3", obstacleSounds: [
             ObstacleSound(obstacleSoundName: "leftRick.mp3", laneNo: 0),
             ObstacleSound(obstacleSoundName: "middleRick.mp3", laneNo: 1),
             ObstacleSound(obstacleSoundName: "rightRick.mp3", laneNo: 2)

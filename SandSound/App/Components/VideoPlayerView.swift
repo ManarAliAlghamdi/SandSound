@@ -10,7 +10,7 @@ struct VideoPlayerView: UIViewControllerRepresentable {
         playerViewController.showsPlaybackControls = false
        
 //      if let url = Bundle.main.url(forResource: videoName, withExtension: "mp4")
-        if let url = Bundle.main.url(forResource: videoName, withExtension: "mov") {
+        if let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") {
             let player = AVPlayer(url: url)
             playerViewController.player = player
             

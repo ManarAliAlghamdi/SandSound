@@ -8,37 +8,40 @@ struct Game: View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
             VStack {
-                if viewModel.gameOver {
-                    Text("Game Over \n you lost").font(.largeTitle).foregroundStyle(Color.white)
-                }
-                Text("Current line: \(viewModel.currentLane)").foregroundStyle(Color.white)
-                Text("Game Timer: \(viewModel.tempTimer)").foregroundStyle(Color.white)
-            }
-            if viewModel.gameEnds {
-                VideoPlayerView(videoName: "Win") {
-                    viewModel.navigateToContentView = true
-                }
-                .edgesIgnoringSafeArea(.all)
-                .overlay(
-                    VStack {
-                        Spacer()
-                        HStack {
+                if !viewModel.navigateToPlay{
+
+                    if viewModel.gameOver {
+                        Text("Game Over \n you lost").font(.largeTitle).foregroundStyle(Color.white)
+                    }
+                    if !viewModel.gameEnds {
+                        
+                        Text("Current line: \(viewModel.currentLane)").foregroundStyle(Color.white)
+                        Text("Game Timer: \(viewModel.tempTimer)").foregroundStyle(Color.white)
+                    }
+                    if viewModel.gameEnds {
+                        FullScreenVideoPlayer(videoName: "Win", videoExtension: "mov", isVideoEnded: $viewModel.navigateToPlay)
+                            .ignoresSafeArea()
+                        VStack {
                             Spacer()
-                            Button(action: {
-                                viewModel.navigateToContentView = true
-                            }) {
-                                
-                                Text("Skip").foregroundColor(.white)
-                                Image(systemName: "forward.fill").foregroundColor(.white)
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    viewModel.navigateToPlay = true
+                                }) {
+                                    
+                                    Text("Skip").foregroundColor(.white)
+                                    Image(systemName: "forward.fill").foregroundColor(.white)
+                                }
+                                .padding(.trailing, 30)
+                                .padding(.bottom, 30)
                             }
-                            .padding(.trailing, 30)
-                            .padding(.bottom, 30)
                         }
                     }
-                )
+                    }else if viewModel.navigateToPlay{
+                        StartingPage()
+                    }
+                
             }
-        }.fullScreenCover(isPresented: $viewModel.navigateToContentView) {
-            ContentView()  // Navigate to ContentView
         }
         .gesture(
             DragGesture()

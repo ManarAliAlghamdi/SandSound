@@ -5,13 +5,14 @@ struct SplashScreen: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                Color.black.edgesIgnoringSafeArea(.all)
                 if showStartingPage{
                     StartingPage()
                 }else{
                     Image("logo")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 164, height: 200)
+                        .frame(width: 1000, height: 1000)
                         .padding()
                     // }
                         .onAppear {
