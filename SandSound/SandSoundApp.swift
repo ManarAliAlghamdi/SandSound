@@ -11,7 +11,8 @@ import SwiftUI
 struct SandSoundApp: App {
     var body: some Scene {
         WindowGroup {
-            GameTutorial()
+            SplashScreen()
+                .preferredColorScheme(.dark)//Forces the app to use dark mode globally
         }
     }
 }
