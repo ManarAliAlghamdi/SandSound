@@ -2,7 +2,7 @@
 import SwiftUI
 
 struct Game: View {
-    @ObservedObject var viewModel: GameViewModel = GameViewModel(gameDuration: 20, gameMode: .game)
+    @ObservedObject var viewModel: GameViewModel = GameViewModel(gameDuration: 88, gameMode: .game, bacgroundSound: "full-background.mp3")
     
     var body: some View {
         ZStack {
@@ -40,13 +40,6 @@ struct Game: View {
                         VStack {
                             Spacer().frame(height: 30)
 
-//                            VStack {
-////                                Text("انهزمت")
-////                                    .font(.largeTitle)
-////                                    .fontWeight(.bold)
-////                                    .foregroundColor(myColors.customGold)
-////                                    .shadow(radius: 5)
-//                            }
                             
                             Text(" اركض اسرع المرة الجايه ...")
                                 .foregroundColor(.white)
@@ -54,24 +47,11 @@ struct Game: View {
                             
                             Spacer().frame(height: 30)
                             
-//                            HStack(spacing: 20) {
-//                                Button(action: {
-//                                    viewModel.restartGame()
-//                                    viewModel.gameOver = false
-//                                }) {
-//                                    HStack {
-//                                        Image(systemName: "gobackward")
-//                                        Text(" الرئيسية")
-//                                    }
-//                                    .padding()
-//                                    .frame(maxWidth: .infinity)
-//                                    .background(myColors.brightOrange.opacity(0.7))
-//                                    .foregroundColor(.white)
-//                                    .cornerRadius(10)
-//                                }
+
                                 Button(action: {
-                                    viewModel.navigateToPlay = true  // Go to main menu
+//                                    viewModel.navigateToPlay = true  // Go to main menu
                                     viewModel.gameOver = false
+                                    viewModel.restartGame()
                                 }) {
                                     HStack {
                                         Image(systemName: "arrow.clockwise")
@@ -84,8 +64,7 @@ struct Game: View {
                                     .cornerRadius(10)
                                 }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                             }
-//                        }                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-	
+
                         .padding(40)
                         .frame(maxWidth: 400)
                         .background(

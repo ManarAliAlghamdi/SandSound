@@ -51,7 +51,7 @@ class GameViewModel: ObservableObject {
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 2)
         ]),
         
-        ObstacleModel(levelNo: 2, obstacleLane: 2, appearenceTime: 6, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
+        ObstacleModel(levelNo: 2, obstacleLane: 0, appearenceTime: 6, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 0),
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 1),
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 2)
@@ -66,33 +66,49 @@ class GameViewModel: ObservableObject {
     
     // MARK: - Data Models - Game
     let gameObstacles: [ObstacleModel] = [
-        ObstacleModel(levelNo: 0, obstacleLane: 1, appearenceTime: 3, preObstacleSoundDelay: 2, duration: 5, collisionSound: "hit2.mp3", obstacleSounds: [
-            ObstacleSound(obstacleSoundName: "leftRick.mp3", laneNo: 0),
-            ObstacleSound(obstacleSoundName: "middleRick.mp3", laneNo: 1),
-            ObstacleSound(obstacleSoundName: "rightRick.mp3", laneNo: 2)
+        // Obstacle 1 - Starts at 5s, lasts 16s (ends at 21s)
+        ObstacleModel(levelNo: 0, obstacleLane: 1, appearenceTime: 5, preObstacleSoundDelay: 4, duration: 8, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "ob1-0.mp3", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "ob1-1.mp3", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "ob1-2.mp3", laneNo: 2)
+        ]),
+       
+        // Obstacle 2 - Starts at 23s (21 + 2), lasts 9s (ends at 32s)
+        ObstacleModel(levelNo: 1, obstacleLane: 0, appearenceTime: 23, preObstacleSoundDelay: 4, duration: 9, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "ob2-0.mp3", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "ob2-1.mp3", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "ob2-2.mp3", laneNo: 2)
         ]),
         
-        ObstacleModel(levelNo: 1, obstacleLane: 2, appearenceTime: 15, preObstacleSoundDelay: 3, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
-            ObstacleSound(obstacleSoundName: "leftLane.wav", laneNo: 0),
-            ObstacleSound(obstacleSoundName: "middleLane.wav", laneNo: 1),
-            ObstacleSound(obstacleSoundName: "rightLane.wav", laneNo: 2)
+        // Obstacle 3 - Starts at 34s (32 + 2), lasts 21s (ends at 55s)
+        ObstacleModel(levelNo: 2, obstacleLane: 2, appearenceTime: 34, preObstacleSoundDelay: 4, duration: 8, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "ob3-0.mp3", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "ob3-1.mp3", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "ob3-2.mp3", laneNo: 2)
         ]),
+        
+        // Obstacle 4 - Starts at 57s (55 + 2), lasts 16s (ends at 73s)
+        ObstacleModel(levelNo: 3, obstacleLane: 1, appearenceTime: 68, preObstacleSoundDelay: 4, duration: 16, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "ob4-0.mp3", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "ob4-1.mp3", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "ob4-2.mp3", laneNo: 2)
+        ])
     ]
-    
+
+
     let gameDialog: [DialogModel] = [
-//        DialogModel(dialogSoundName: "tutLeft.wav", dialogApperance: 1),
-//        DialogModel(dialogSoundName: "tutRight.wav", dialogApperance: 10),
+        DialogModel(dialogSoundName: "dialog-After-ob3.mp3", dialogApperance: 58),
     ]
     
     
     // MARK: - Initialization
-    init(gameDuration: TimeInterval, gameMode: gameMode) {
+    init(gameDuration: TimeInterval, gameMode: gameMode, bacgroundSound: String) {
         self.gameTimeRemaining = gameDuration
         self.gameDuration = gameDuration
         self.gameMood = gameMode
         
         setupGameTimer(gameMode: gameMode)
-        soundManager.playSoundFromFile(named: "backgroundSound.wav", player: &soundManager.backgroundAudioPlayer, soundInLoop: true)
+        soundManager.playSoundFromFile(named: bacgroundSound, player: &soundManager.backgroundAudioPlayer, soundInLoop: true)
     }
     
     // MARK: - Game Timer Management

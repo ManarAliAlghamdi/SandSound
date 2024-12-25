@@ -2,7 +2,7 @@ import SwiftUI
 import CoreHaptics
 
 struct GameTutorial: View {
-    @ObservedObject var viewModel = GameViewModel(gameDuration: 10, gameMode: .tutorial)
+    @ObservedObject var viewModel = GameViewModel(gameDuration: 10, gameMode: .tutorial, bacgroundSound: "backgroundSound.wav")
     
     var body: some View {
         ZStack {
