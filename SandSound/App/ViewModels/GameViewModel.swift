@@ -66,7 +66,7 @@ class GameViewModel: ObservableObject {
     
     // MARK: - Data Models - Game
     let gameObstacles: [ObstacleModel] = [
-        ObstacleModel(levelNo: 0, obstacleLane: 2, appearenceTime: 5, preObstacleSoundDelay: 4, duration: 5, collisionSound: "hit2.mp3", obstacleSounds: [
+        ObstacleModel(levelNo: 0, obstacleLane: 1, appearenceTime: 3, preObstacleSoundDelay: 2, duration: 5, collisionSound: "hit2.mp3", obstacleSounds: [
             ObstacleSound(obstacleSoundName: "leftRick.mp3", laneNo: 0),
             ObstacleSound(obstacleSoundName: "middleRick.mp3", laneNo: 1),
             ObstacleSound(obstacleSoundName: "rightRick.mp3", laneNo: 2)
@@ -80,8 +80,8 @@ class GameViewModel: ObservableObject {
     ]
     
     let gameDialog: [DialogModel] = [
-        DialogModel(dialogSoundName: "tutLeft.wav", dialogApperance: 1),
-        DialogModel(dialogSoundName: "tutRight.wav", dialogApperance: 10),
+//        DialogModel(dialogSoundName: "tutLeft.wav", dialogApperance: 1),
+//        DialogModel(dialogSoundName: "tutRight.wav", dialogApperance: 10),
     ]
     
     
@@ -117,6 +117,23 @@ class GameViewModel: ObservableObject {
     
     
     
+    
+    func restartGame() {
+        stopGame()  
+        gameOver = false
+        gameEnds = false
+        tempTimer = 0
+        gameTimeRemaining = gameDuration
+        currentLane = 1
+        currentlevel = 0
+        
+        soundManager.stopAllSounds()
+        soundManager.playSoundFromFile(named: "backgroundSound.wav", player: &soundManager.backgroundAudioPlayer, soundInLoop: true)
+        
+        setupGameTimer(gameMode: gameMood)  // Restart the timer
+        print("Game Restarted")
+    }
+
     func pauseGameTimer() {
         gameTimer?.invalidate()
         print("Game Paused")

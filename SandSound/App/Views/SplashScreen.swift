@@ -14,7 +14,6 @@ struct SplashScreen: View {
                         .scaledToFit()
                         .frame(width: 1000, height: 1000)
                         .padding()
-                    // }
                         .onAppear {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                                 withAnimation{
@@ -30,6 +29,5 @@ struct SplashScreen: View {
 }
 #Preview {
     SplashScreen()
-       // .preferredColorScheme(.dark)
 
 }

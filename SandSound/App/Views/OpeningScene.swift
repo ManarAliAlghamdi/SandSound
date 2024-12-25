@@ -72,7 +72,6 @@ struct OpeningScene: View {
         }
     
 }
-
-//            .navigationDestination(isPresented: $navigateToPlay) {
-//                GameTut`1orial()
-//            }
+#Preview {
+    OpeningScene()
+}

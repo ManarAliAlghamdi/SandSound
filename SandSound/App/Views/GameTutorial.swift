@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreHaptics
 
 struct GameTutorial: View {
     @ObservedObject var viewModel = GameViewModel(gameDuration: 10, gameMode: .tutorial)
@@ -18,7 +19,9 @@ struct GameTutorial: View {
                                     withAnimation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
                                         viewModel.leftArrowOffset = -30
                                     }
+                                    UIAccessibility.post(notification: .layoutChanged, argument: "Swipe left to avoid obstacle")
                                 }
+                                .accessibilityLabel("Swipe left to avoid obstacle")
                                 .transition(.opacity)
                         } else if viewModel.showRightArrow {
                             Image("rightArrow")
@@ -29,11 +32,12 @@ struct GameTutorial: View {
                                     withAnimation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
                                         viewModel.rightArrowOffset = -30
                                     }
+                                    UIAccessibility.post(notification: .layoutChanged, argument: "Swipe right to avoid obstacle")
                                 }
+                                .accessibilityLabel("Swipe right to avoid obstacle")
                                 .transition(.opacity)
                         }
                     }
-                    
                     
                     if viewModel.gameEnds {
                         ZStack{
@@ -47,7 +51,6 @@ struct GameTutorial: View {
                                     Button(action: {
                                         viewModel.navigateToPlay = true
                                     }) {
-                                        
                                         Text("Skip").foregroundColor(.white)
                                         Image(systemName: "forward.fill").foregroundColor(.white)
                                     }
@@ -56,25 +59,31 @@ struct GameTutorial: View {
                                 }
                             }
                         }
-                        
                     }
-                }else if viewModel.navigateToPlay{
+                } else if viewModel.navigateToPlay {
                     Game()
                 }
-
             }
         }
-        .gesture(
+        .simultaneousGesture(
             DragGesture()
                 .onEnded { value in
                     let horizontalDistance = value.translation.width
                     if horizontalDistance < -50 {
                         viewModel.handleSwipe(direction: .left)
+                        UIAccessibility.post(notification: .layoutChanged, argument: "Swiped left")
                     } else if horizontalDistance > 50 {
                         viewModel.handleSwipe(direction: .right)
+                        UIAccessibility.post(notification: .layoutChanged, argument: "Swiped right")
                     }
                 }
         )
+        .accessibilityAction(named: "Swipe Left") {
+            viewModel.handleSwipe(direction: .left)
+        }
+        .accessibilityAction(named: "Swipe Right") {
+            viewModel.handleSwipe(direction: .right)
+        }
     }
 }
 
