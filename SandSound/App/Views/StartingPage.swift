@@ -1,3 +1,4 @@
+
 import SwiftUI
 
 struct StartingPage: View {
@@ -5,12 +6,9 @@ struct StartingPage: View {
     var body: some View {
         
         ZStack {
-            Image("Background")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
-            GifWebView(gifName: "StarryBackground")
-           // .ignoresSafeArea()
+            GifWebView(gifName: "StarryBackground2")
+                 // .ignoresSafeArea()
+                   
             Button(action: {
                 navigateToOpeningScene = true
             }) {
@@ -21,11 +19,12 @@ struct StartingPage: View {
                     .padding()
                     .background(
                         Circle()
-                            .fill(Color.black.opacity(0.6))
+                            .fill(Color.orange.opacity(0.09))
                             .shadow(radius: 10)
                     )
             }
-            .padding(.bottom, 50)  
+            .padding(.bottom, 50)
+            .padding(.top, 200)
 
     }
         .navigationDestination(isPresented: $navigateToOpeningScene) {
