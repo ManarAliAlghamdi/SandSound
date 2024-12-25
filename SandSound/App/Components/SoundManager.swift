@@ -55,8 +55,9 @@ class SoundManager{
     func switchSound(to soundName: String) {
         currentTime = obstaclePlayer?.currentTime ?? 0
         obstaclePlayer?.stop()
-        playSoundFromFile(named: soundName, player: &obstaclePlayer ,at: currentTime)
+        playSoundFromFile(named: soundName, player: &obstaclePlayer, at: currentTime)
     }
+
     func stopAllSounds(){
         dialogPlayer?.stop()
         backgroundAudioPlayer?.stop()

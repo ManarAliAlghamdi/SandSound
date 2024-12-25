@@ -2,30 +2,29 @@
 import SwiftUI
 
 struct Game: View {
-    @ObservedObject var viewModel: GameViewModel = GameViewModel(gameDuration: 20, gameMode: .game)
+    @EnvironmentObject var viewModel: GameViewModel
     
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
             VStack {
-                if !viewModel.navigateToPlay{
+                if !viewModel.showEndingScene{
                     
                     if !viewModel.gameOver {
                         
                         if !viewModel.gameEnds {
-                            
                             Text("Current line: \(viewModel.currentLane)").foregroundStyle(Color.white)
                             Text("Game Timer: \(viewModel.tempTimer)").foregroundStyle(Color.white)
                         }
                         if viewModel.gameEnds {
-                            FullScreenVideoPlayer(videoName: "Win", videoExtension: "mov", isVideoEnded: $viewModel.navigateToPlay)
+                            FullScreenVideoPlayer(videoName: "Win", videoExtension: "mov", isVideoEnded: $viewModel.showEndingScene)
                                 .ignoresSafeArea()
                             VStack {
                                 Spacer()
                                 HStack {
                                     Spacer()
                                     Button(action: {
-                                        viewModel.navigateToPlay = true
+                                        viewModel.showEndingScene = true
                                     }) {
                                         
                                         Text("Skip").foregroundColor(.white)
@@ -39,39 +38,14 @@ struct Game: View {
                     } else if viewModel.gameOver {
                         VStack {
                             Spacer().frame(height: 30)
-
-//                            VStack {
-////                                Text("انهزمت")
-////                                    .font(.largeTitle)
-////                                    .fontWeight(.bold)
-////                                    .foregroundColor(myColors.customGold)
-////                                    .shadow(radius: 5)
-//                            }
-                            
                             Text(" اركض اسرع المرة الجايه ...")
                                 .foregroundColor(.white)
                                 .italic()
                             
                             Spacer().frame(height: 30)
-                            
-//                            HStack(spacing: 20) {
-//                                Button(action: {
-//                                    viewModel.restartGame()
-//                                    viewModel.gameOver = false
-//                                }) {
-//                                    HStack {
-//                                        Image(systemName: "gobackward")
-//                                        Text(" الرئيسية")
-//                                    }
-//                                    .padding()
-//                                    .frame(maxWidth: .infinity)
-//                                    .background(myColors.brightOrange.opacity(0.7))
-//                                    .foregroundColor(.white)
-//                                    .cornerRadius(10)
-//                                }
+
                                 Button(action: {
-                                    viewModel.navigateToPlay = true  // Go to main menu
-                                    viewModel.gameOver = false
+                                    viewModel.restartGame()
                                 }) {
                                     HStack {
                                         Image(systemName: "arrow.clockwise")
@@ -84,12 +58,10 @@ struct Game: View {
                                     .cornerRadius(10)
                                 }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                             }
-//                        }                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-	
                         .padding(40)
                         .frame(maxWidth: 400)
                         .background(
-                            Image("gameOver")  // Replace with your image name
+                            Image("gameOver")  
                                 .resizable()
                                 .scaledToFill()
                                 .edgesIgnoringSafeArea(.all)
@@ -105,7 +77,7 @@ struct Game: View {
 
                     }
 
-                }else if viewModel.navigateToPlay{
+                }else if viewModel.showEndingScene{
                     StartingPage()
                 }
                 
@@ -114,13 +86,16 @@ struct Game: View {
         .gesture(
             DragGesture()
                 .onEnded { value in
+            if !viewModel.gameOver {
                     let horizontalDistance = value.translation.width
                     if horizontalDistance < -50 {
                         viewModel.handleSwipe(direction: .left)
                     } else if horizontalDistance > 50 {
                         viewModel.handleSwipe(direction: .right)
                     }
+                    
                 }
+            }
         )
     }
 }

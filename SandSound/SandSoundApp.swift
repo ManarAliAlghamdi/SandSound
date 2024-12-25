@@ -9,11 +9,26 @@ import SwiftUI
 
 @main
 struct SandSoundApp: App {
+    @StateObject var gameViewModel = GameViewModel(gameDuration: 20, gameMode: .game)
     var body: some Scene {
         WindowGroup {
-//            Game()
-          SplashScreen()
-                .preferredColorScheme(.dark)//Forces the app to use dark mode globally
+//                   r()
+            SplashScreen()
+                .environmentObject(gameViewModel)
+                .preferredColorScheme(.dark)
+        }
+    }
+}
+
+struct r: View {
+    @EnvironmentObject var viewModel: GameViewModel
+    var body: some View {
+        ZStack {
+            Game()
+                .environmentObject(viewModel)
+                .onAppear {
+                    viewModel.switchMode(to: .game, duration: 20)
+                }
         }
     }
 }

@@ -34,13 +34,13 @@ struct FullScreenVideoPlayer: UIViewControllerRepresentable {
 }
 
 struct OpeningScene: View {
-    @State private var navigateToPlay = false
+    @EnvironmentObject var viewModel: GameViewModel
 
     var body: some View {
         NavigationStack {
-            if !navigateToPlay{
+            if !viewModel.showTutorial{
                 ZStack {
-                    FullScreenVideoPlayer(videoName: "video", videoExtension: "MP4", isVideoEnded: $navigateToPlay)
+                    FullScreenVideoPlayer(videoName: "video", videoExtension: "MP4", isVideoEnded: $viewModel.showTutorial)
                         .ignoresSafeArea()
                     
                     VStack {
@@ -48,7 +48,7 @@ struct OpeningScene: View {
                         HStack {
                             Spacer()
                             Button(action: {
-                                navigateToPlay = true
+                                viewModel.showTutorial = true
                             }) {
                                 Text("Skip")
                                     .font(.title2)
@@ -64,8 +64,12 @@ struct OpeningScene: View {
                     }
                 }
               
-            }else if navigateToPlay{
+            }else if viewModel.showTutorial{
                 GameTutorial()
+                    .environmentObject(viewModel)
+                    .onAppear {
+                        viewModel.switchMode(to: .tutorial, duration: 10)
+                    }
             }
         }
                 .navigationBarBackButtonHidden(true)
