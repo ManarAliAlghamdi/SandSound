@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 struct StartingPage: View {
@@ -7,9 +6,10 @@ struct StartingPage: View {
     var body: some View {
         
         ZStack {
-            if !showOpeningScene{
+            if !showOpeningScene {
                 GifWebView(gifName: "StarryBackground")
                 // .ignoresSafeArea()
+                    .accessibilityHidden(true)
                 
                 Button(action: {
                     showOpeningScene = true
@@ -24,10 +24,12 @@ struct StartingPage: View {
                                 .fill(Color.orange.opacity(0.09))
                                 .shadow(radius: 10)
                         )
+                        .accessibilityLabel("Play the game")
+                        .accessibilityHint("Starts the opening scene of the game")
                 }
                 .padding(.bottom, 50)
                 .padding(.top, 200)
-            }else if showOpeningScene{
+            } else if showOpeningScene {
                 OpeningScene()
             }
         }

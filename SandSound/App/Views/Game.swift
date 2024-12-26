@@ -17,6 +17,9 @@ struct Game: View {
                         if viewModel.gameEnds {
                             FullScreenVideoPlayer(videoName: "Win", videoExtension: "mov", isVideoEnded: $viewModel.showHomePage)
                                 .ignoresSafeArea()
+//                                .accessibilityLabel("Wining video")
+//                                .accessibilityHint("Plays a video for winning the game.")
+                            
                             VStack {
                                 Spacer()
                                 HStack {
@@ -29,7 +32,9 @@ struct Game: View {
                                         Text("Skip").foregroundColor(.white)
                                         Image(systemName: "forward.fill").foregroundColor(.white)
                                     }
-                                    .padding(.trailing, 30)
+                                    .accessibilityLabel("Skip Victory Video")
+                                    .accessibilityHint("Skips the video and goes back to the home page.")
+                                     .padding(.trailing, 30)
                                     .padding(.bottom, 30)
                                 }
                             }
@@ -42,6 +47,7 @@ struct Game: View {
                             Text(" اركض اسرع المرة الجايه ...")
                                 .foregroundColor(.white)
                                 .italic()
+                                .accessibilityLabel("Run faster next time.")
                             
                             Spacer().frame(height: 30)
                             
@@ -60,7 +66,10 @@ struct Game: View {
                                     .background(Color.white.opacity(0.09))
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
-                                }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                                }
+                                .accessibilityLabel("Play again")
+                                .accessibilityHint("Restarts the game.")
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                             }
 
                         .padding(40)
@@ -84,6 +93,8 @@ struct Game: View {
 
                 }else if  viewModel.showHomePage{
                     StartingPage()
+                        .accessibilityLabel("Home Page")
+                        .accessibilityHint("Navigate to the starting page.")
                     
                 }
                 

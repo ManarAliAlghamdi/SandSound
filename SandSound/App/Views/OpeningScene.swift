@@ -39,7 +39,7 @@ struct OpeningScene: View {
                 GameTutorial()
                     .environmentObject(viewModel)
                     .onAppear {
-                        viewModel.switchMode(to: .tutorial, duration: 1, backgroundSound: "backgroundSound.wav")
+                        viewModel.switchMode(to: .tutorial, duration: 10, backgroundSound: "backgroundSound.wav")
                     }
             }
         }

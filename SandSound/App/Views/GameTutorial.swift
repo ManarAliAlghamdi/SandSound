@@ -45,6 +45,7 @@ struct GameTutorial: View {
                         ZStack{
                             FullScreenVideoPlayer(videoName: "Win", videoExtension: "mov", isVideoEnded: $viewModel.showGame)
                                 .ignoresSafeArea()
+                                .accessibilityLabel("Starting Scene video")
                             
                             VStack {
                                 Spacer()
@@ -56,6 +57,7 @@ struct GameTutorial: View {
                                         Text("Skip").foregroundColor(.white)
                                         Image(systemName: "forward.fill").foregroundColor(.white)
                                     }
+                                    .accessibilityLabel("Skip Scene")
                                     .padding(.trailing, 30)
                                     .padding(.bottom, 30)
                                 }
@@ -66,32 +68,56 @@ struct GameTutorial: View {
                     Game()
                         .environmentObject(viewModel)
                         .onAppear {
-                            viewModel.switchMode(to: .game, duration: 1,  backgroundSound: "full-background.mp3")
+                            viewModel.switchMode(to: .game, duration: 88,  backgroundSound: "full-background.mp3")
                         }
+                        .accessibilityLabel("Actual Game Started")
                 }
             }
-        }
-        .simultaneousGesture(
+        }.simultaneousGesture(
             DragGesture()
                 .onEnded { value in
                     let horizontalDistance = value.translation.width
                     if horizontalDistance < -50 {
                         viewModel.handleSwipe(direction: .left)
-                        UIAccessibility.post(notification: .layoutChanged, argument: "Swiped left")
+                        UIAccessibility.post(notification: .announcement, argument: "Swiped left")
                     } else if horizontalDistance > 50 {
                         viewModel.handleSwipe(direction: .right)
-                        UIAccessibility.post(notification: .layoutChanged, argument: "Swiped right")
+                        UIAccessibility.post(notification: .announcement, argument: "Swiped right")
                     }
                 }
         )
         .accessibilityAction(named: "Swipe Left") {
             viewModel.handleSwipe(direction: .left)
+            UIAccessibility.post(notification: .announcement, argument: "Swiped left")
         }
         .accessibilityAction(named: "Swipe Right") {
             viewModel.handleSwipe(direction: .right)
+            UIAccessibility.post(notification: .announcement, argument: "Swiped right")
         }
     }
 }
+        
+//        .simultaneousGesture(
+//            DragGesture()
+//                .onEnded { value in
+//                    let horizontalDistance = value.translation.width
+//                    if horizontalDistance < -50 {
+//                        viewModel.handleSwipe(direction: .left)
+//                        UIAccessibility.post(notification: .layoutChanged, argument: "Swiped left")
+//                    } else if horizontalDistance > 50 {
+//                        viewModel.handleSwipe(direction: .right)
+//                        UIAccessibility.post(notification: .layoutChanged, argument: "Swiped right")
+//                    }
+//                }
+//        )
+//        .accessibilityAction(named: "Swipe Left") {
+//            viewModel.handleSwipe(direction: .left)
+//        }
+//        .accessibilityAction(named: "Swipe Right") {
+//            viewModel.handleSwipe(direction: .right)
+//        }
+//    }
+//}
 
 #Preview {
     GameTutorial()

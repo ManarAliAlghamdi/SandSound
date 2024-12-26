@@ -55,7 +55,7 @@ class GameViewModel: ObservableObject {
     
     // MARK: - Data Models - Tutorial
     let tutorialObstacles: [ObstacleModel] = [
-        ObstacleModel(levelNo: 1, obstacleLane: 0, appearenceTime: 3, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
+        ObstacleModel(levelNo: 1, obstacleLane: 0, appearenceTime: 10, preObstacleSoundDelay: 5, duration: 1, collisionSound: "hit2.mp3", obstacleSounds: [
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 0),
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 1),
             ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 2)
@@ -84,28 +84,28 @@ class GameViewModel: ObservableObject {
 //        ]),
 
         // Obstacle 1 - Starts at 5s, lasts 16s (ends at 21s)
-        ObstacleModel(levelNo: 0, obstacleLane: 1, appearenceTime: 5, preObstacleSoundDelay: 4, duration: 8, collisionSound: "hit2.mp3", obstacleSounds: [
+        ObstacleModel(levelNo: 0, obstacleLane: 1, appearenceTime: 10, preObstacleSoundDelay: 4, duration: 2, collisionSound: "hit2.mp3", obstacleSounds: [
             ObstacleSound(obstacleSoundName: "ob1-0.mp3", laneNo: 0),
             ObstacleSound(obstacleSoundName: "ob1-1.mp3", laneNo: 1),
             ObstacleSound(obstacleSoundName: "ob1-2.mp3", laneNo: 2)
         ]),
        
         // Obstacle 2 - Starts at 23s (21 + 2), lasts 9s (ends at 32s)
-        ObstacleModel(levelNo: 1, obstacleLane: 0, appearenceTime: 23, preObstacleSoundDelay: 4, duration: 9, collisionSound: "hit2.mp3", obstacleSounds: [
+        ObstacleModel(levelNo: 1, obstacleLane: 0, appearenceTime: 33, preObstacleSoundDelay: 10, duration: 2, collisionSound: "hit2.mp3", obstacleSounds: [
             ObstacleSound(obstacleSoundName: "ob2-0.mp3", laneNo: 0),
             ObstacleSound(obstacleSoundName: "ob2-1.mp3", laneNo: 1),
             ObstacleSound(obstacleSoundName: "ob2-2.mp3", laneNo: 2)
         ]),
         
         // Obstacle 3 - Starts at 34s (32 + 2), lasts 21s (ends at 55s)
-        ObstacleModel(levelNo: 2, obstacleLane: 2, appearenceTime: 34, preObstacleSoundDelay: 4, duration: 8, collisionSound: "hit2.mp3", obstacleSounds: [
+        ObstacleModel(levelNo: 2, obstacleLane: 2, appearenceTime: 40, preObstacleSoundDelay: 3, duration: 2, collisionSound: "hit2.mp3", obstacleSounds: [
             ObstacleSound(obstacleSoundName: "ob3-0.mp3", laneNo: 0),
             ObstacleSound(obstacleSoundName: "ob3-1.mp3", laneNo: 1),
             ObstacleSound(obstacleSoundName: "ob3-2.mp3", laneNo: 2)
         ]),
         
         // Obstacle 4 - Starts at 57s (55 + 2), lasts 16s (ends at 73s)
-        ObstacleModel(levelNo: 3, obstacleLane: 1, appearenceTime: 68, preObstacleSoundDelay: 4, duration: 16, collisionSound: "hit2.mp3", obstacleSounds: [
+        ObstacleModel(levelNo: 3, obstacleLane: 1, appearenceTime: 76, preObstacleSoundDelay: 10, duration: 2, collisionSound: "hit2.mp3", obstacleSounds: [
             ObstacleSound(obstacleSoundName: "ob4-0.mp3", laneNo: 0),
             ObstacleSound(obstacleSoundName: "ob4-1.mp3", laneNo: 1),
             ObstacleSound(obstacleSoundName: "ob4-2.mp3", laneNo: 2)
@@ -114,7 +114,10 @@ class GameViewModel: ObservableObject {
 
 
     let gameDialog: [DialogModel] = [
-        DialogModel(dialogSoundName: "dialog-After-ob3.mp3", dialogApperance: 58),
+        DialogModel(dialogSoundName: "Heart-After-ob1.mp3", dialogApperance: 7),
+        DialogModel(dialogSoundName: "Heart-After-ob3.mp3", dialogApperance: 40),
+        DialogModel(dialogSoundName: "dialog-After-ob3.mp3", dialogApperance: 49),
+        DialogModel(dialogSoundName: "Heart-After-ob4.mp3", dialogApperance: 67),
     ]
     
     
