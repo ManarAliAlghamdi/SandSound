@@ -3,15 +3,16 @@ import SwiftUI
 
 struct StartingPage: View {
     @EnvironmentObject var viewModel: GameViewModel
+    @State var showOpeningScene: Bool = false
     var body: some View {
         
         ZStack {
-            if !viewModel.showOpeningScene{
+            if !showOpeningScene{
                 GifWebView(gifName: "StarryBackground")
                 // .ignoresSafeArea()
                 
                 Button(action: {
-                    viewModel.showOpeningScene = true
+                    showOpeningScene = true
                 }) {
                     Image(systemName: "play.fill")
                         .font(.system(size: 60))
@@ -26,7 +27,7 @@ struct StartingPage: View {
                 }
                 .padding(.bottom, 50)
                 .padding(.top, 200)
-            }else if viewModel.showOpeningScene{
+            }else if showOpeningScene{
                 OpeningScene()
             }
         }

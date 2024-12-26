@@ -1,4 +1,5 @@
 import Foundation
+import AVFoundation
 import SwiftUI
 
 class GameViewModel: ObservableObject {
@@ -10,11 +11,12 @@ class GameViewModel: ObservableObject {
     
     @Published var tutrioalComplete = false
     @Published var showStartingPage = false
+    @Published var showHomePage = false
     @Published var showOpeningScene = false
     @Published var showTutorial = false
     @Published var showGame = false
     @Published var showEndingScene = false
-    
+    var player: AVPlayer?
     
     @Published var currentMode: gameMode
     @Published var gameTimeRemaining: TimeInterval
@@ -29,6 +31,7 @@ class GameViewModel: ObservableObject {
     @Published var gameMood: gameMode
     
     @Published var currentTime: TimeInterval = 0
+    @Published var backgroundSound: String = ""
 
     var obstacles: [ObstacleModel]{
         switch gameMood {
@@ -52,43 +55,66 @@ class GameViewModel: ObservableObject {
     
     // MARK: - Data Models - Tutorial
     let tutorialObstacles: [ObstacleModel] = [
-//        ObstacleModel(levelNo: 1, obstacleLane: 0, appearenceTime: 3, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
-//            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 0),
-//            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 1),
-//            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 2)
-//        ]),
-//        
-//        ObstacleModel(levelNo: 2, obstacleLane: 2, appearenceTime: 6, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
-//            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 0),
-//            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 1),
-//            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 2)
-//        ]),
+        ObstacleModel(levelNo: 1, obstacleLane: 0, appearenceTime: 3, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 2)
+        ]),
+        
+        ObstacleModel(levelNo: 2, obstacleLane: 2, appearenceTime: 6, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "dogBarking.wav", laneNo: 2)
+        ]),
+       
     ]
     
     let tutorialDialog: [DialogModel] = [
-//        DialogModel(dialogSoundName: "tutLeft.wav", dialogApperance: 3),
-//        DialogModel(dialogSoundName: "tutRight.wav", dialogApperance: 6),
+        DialogModel(dialogSoundName: "tutLeft.wav", dialogApperance: 3),
+        DialogModel(dialogSoundName: "tutRight.wav", dialogApperance: 6),
     ]
     
     
     // MARK: - Data Models - Game
     let gameObstacles: [ObstacleModel] = [
-        ObstacleModel(levelNo: 0, obstacleLane: 2, appearenceTime: 1, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
-            ObstacleSound(obstacleSoundName: "leftRick.mp3", laneNo: 0),
-            ObstacleSound(obstacleSoundName: "middleRick.mp3", laneNo: 1),
-            ObstacleSound(obstacleSoundName: "rightRick.mp3", laneNo: 2)
-        ]),
-//        
-//        ObstacleModel(levelNo: 1, obstacleLane: 2, appearenceTime: 15, preObstacleSoundDelay: 3, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
-//            ObstacleSound(obstacleSoundName: "leftLane.wav", laneNo: 0),
-//            ObstacleSound(obstacleSoundName: "middleLane.wav", laneNo: 1),
-//            ObstacleSound(obstacleSoundName: "rightLane.wav", laneNo: 2)
+//        ObstacleModel(levelNo: 0, obstacleLane: 2, appearenceTime: 1, preObstacleSoundDelay: 0, duration: 0, collisionSound: "hit2.mp3", obstacleSounds: [
+//            ObstacleSound(obstacleSoundName: "leftRick.mp3", laneNo: 0),
+//            ObstacleSound(obstacleSoundName: "middleRick.mp3", laneNo: 1),
+//            ObstacleSound(obstacleSoundName: "rightRick.mp3", laneNo: 2)
 //        ]),
+
+        // Obstacle 1 - Starts at 5s, lasts 16s (ends at 21s)
+        ObstacleModel(levelNo: 0, obstacleLane: 1, appearenceTime: 5, preObstacleSoundDelay: 4, duration: 8, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "ob1-0.mp3", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "ob1-1.mp3", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "ob1-2.mp3", laneNo: 2)
+        ]),
+       
+        // Obstacle 2 - Starts at 23s (21 + 2), lasts 9s (ends at 32s)
+        ObstacleModel(levelNo: 1, obstacleLane: 0, appearenceTime: 23, preObstacleSoundDelay: 4, duration: 9, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "ob2-0.mp3", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "ob2-1.mp3", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "ob2-2.mp3", laneNo: 2)
+        ]),
+        
+        // Obstacle 3 - Starts at 34s (32 + 2), lasts 21s (ends at 55s)
+        ObstacleModel(levelNo: 2, obstacleLane: 2, appearenceTime: 34, preObstacleSoundDelay: 4, duration: 8, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "ob3-0.mp3", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "ob3-1.mp3", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "ob3-2.mp3", laneNo: 2)
+        ]),
+        
+        // Obstacle 4 - Starts at 57s (55 + 2), lasts 16s (ends at 73s)
+        ObstacleModel(levelNo: 3, obstacleLane: 1, appearenceTime: 68, preObstacleSoundDelay: 4, duration: 16, collisionSound: "hit2.mp3", obstacleSounds: [
+            ObstacleSound(obstacleSoundName: "ob4-0.mp3", laneNo: 0),
+            ObstacleSound(obstacleSoundName: "ob4-1.mp3", laneNo: 1),
+            ObstacleSound(obstacleSoundName: "ob4-2.mp3", laneNo: 2)
+        ])
     ]
-    
+
+
     let gameDialog: [DialogModel] = [
-//        DialogModel(dialogSoundName: "tutLeft.wav", dialogApperance: 1),
-//        DialogModel(dialogSoundName: "tutRight.wav", dialogApperance: 10),
+        DialogModel(dialogSoundName: "dialog-After-ob3.mp3", dialogApperance: 58),
     ]
     
     
@@ -99,6 +125,7 @@ class GameViewModel: ObservableObject {
         self.gameMood = gameMode
         self.currentMode = gameMode
         
+    
     }
     
     // MARK: - Game Timer Management
@@ -117,6 +144,7 @@ class GameViewModel: ObservableObject {
                 stopGame()
                 if gameMode == .game{
                     gameEnds = true
+                    
                 }else if gameMode == .tutorial{
                     tutrioalComplete = true
                 }
@@ -124,20 +152,21 @@ class GameViewModel: ObservableObject {
         }
     }
     
-    func switchMode(to mode: gameMode, duration: TimeInterval) {
+    func switchMode(to mode: gameMode, duration: TimeInterval, backgroundSound: String) {
         stopGame()  // Pause the current game
         gameMood = mode
         tempTimer = 0
+        currentLane = 1
         gameTimeRemaining = duration
         gameDuration = duration
         setupGameTimer(gameMode: mode)  // Restart timer for new mode
         print("Switched to \(mode)")
-        soundManager.playSoundFromFile(named: "backgroundSound.wav", player: &soundManager.backgroundAudioPlayer, soundInLoop: true)
+        soundManager.playSoundFromFile(named: backgroundSound, player: &soundManager.backgroundAudioPlayer, soundInLoop: true)
     }
         
     
     
-    func restartGame() {
+    func restartGame(backgroundSound: String) {
         stopGame()  
         gameOver = false
         gameEnds = false
@@ -184,6 +213,7 @@ class GameViewModel: ObservableObject {
                     gameOver = true
                     stopGame()
                     soundManager.playSoundFromFile(named: obstacle.collisionSound, player: &soundManager.collisionAudioPlayer)
+                    soundManager.currentTime = 0 
                     print("User lost the game due to collision with obstacle at lane \(obstacle.obstacleLane)")
                     return
                 }
@@ -192,91 +222,62 @@ class GameViewModel: ObservableObject {
     }
 
     // MARK: - Swipe Handling
-//    func handleSwipe(direction: SwipeDirection) {
-//        switch direction {
-//        case .left:
-//            if currentLane > 0 {
-//                currentLane = max(0, currentLane - 1)  // Prevent multiple decrements
-//                updateSoundAfterSwipe()
-//            }
-//        case .right:
-//            if currentLane < 2 {
-//                currentLane = min(2, currentLane + 1)  // Prevent multiple increments
-//                updateSoundAfterSwipe()
-//            }
-//        }
-//        print("Current Lane: \(currentLane)")
-//    }
+    @Published var lastSwipeTime: TimeInterval = 0
+
+func handleSwipe(direction: SwipeDirection) {
+    let now = Date().timeIntervalSince1970
+    guard now - lastSwipeTime > 0.3 else {
+        // If it's within 300 ms of the last swipe, ignore
+        return
+    }
+    lastSwipeTime = now
     
-    func handleSwipe(direction: SwipeDirection) {
-        switch direction {
-        case .left:
-            if currentLane > 0 {
-                currentLane -= 1
-                if soundManager.obstaclePlayer != nil {
-                    if soundManager.obstaclePlayer!.isPlaying {
-                        if gameMood == .game {
-                            soundManager.switchSound(to: gameObstacles[currentlevel].obstacleSounds[currentLane].obstacleSoundName)
-                            
-                        }
-                    }
-                    if showLeftArrow {
-                        hideArrows("left")
-                        soundManager.stopSound(for: &soundManager.obstaclePlayer)
-                        resumeGameTimer()
+    print("fuck you \(gameObstacles[currentlevel].obstacleSounds[currentLane].obstacleSoundName)")
+    
+    switch direction {
+    case .left:
+        if currentLane > 0 {
+            currentLane -= 1
+            if soundManager.obstaclePlayer != nil {
+                if soundManager.obstaclePlayer!.isPlaying {
+                    if gameMood == .game {
+                        soundManager.switchSound(to: gameObstacles[currentlevel].obstacleSounds[currentLane].obstacleSoundName)
+                        
                     }
                 }
-            }
-        case .right:
-            if currentLane < 2 {
-                currentLane += 1
-                if soundManager.obstaclePlayer != nil {
-                    if soundManager.obstaclePlayer!.isPlaying {
-                        if gameMood == .game {
-                            soundManager.switchSound(to: gameObstacles[currentlevel].obstacleSounds[currentLane].obstacleSoundName)
-                            
-                        }
-                    }
-                }
-                if showRightArrow {
-                    hideArrows("right")
+                if showLeftArrow {
+                    hideArrows("left")
                     soundManager.stopSound(for: &soundManager.obstaclePlayer)
                     resumeGameTimer()
                 }
             }
         }
-    }
-    
-    private func updateSoundAfterSwipe() {
-        // If an obstacle is actively playing, switch to the correct lane’s sound from the same time.
-        if let player = soundManager.obstaclePlayer, player.isPlaying {
-            if gameMood == .game {
-                soundManager.switchSound(
-                    to: gameObstacles[currentlevel].obstacleSounds[currentLane].obstacleSoundName
-                )
-            } else if gameMood == .tutorial {
-                // Possibly do nothing or also switch sound if you want the tutorial dog barking
-                // to reflect the lane you’re in. Just be mindful of arrow logic below.
-            }
-        }
-        
-        // For tutorial arrows:
-        if gameMood == .tutorial {
-            if showLeftArrow {
-                hideArrows("left")
-                // STOP only if your tutorial design wants to end the barking once user swipes.
-                soundManager.stopSound(for: &soundManager.obstaclePlayer)
-                resumeGameTimer()
+    case .right:
+        if currentLane < 2 {
+            currentLane += 1
+            if soundManager.obstaclePlayer != nil {
+                if soundManager.obstaclePlayer!.isPlaying {
+                    if gameMood == .game {
+                        soundManager.switchSound(to: gameObstacles[currentlevel].obstacleSounds[currentLane].obstacleSoundName)
+                        
+                    }
+                }
             }
             if showRightArrow {
                 hideArrows("right")
-                // STOP only if your tutorial design wants to end the barking once user swipes.
                 soundManager.stopSound(for: &soundManager.obstaclePlayer)
                 resumeGameTimer()
             }
         }
     }
-
+}
+    func skipVideo() {
+            print("Skipping video")
+            showHomePage = true
+        }
+    
+    
+   
     
     // MARK: - Arrow Handling
     func hideArrows(_ leftOrRight: String) {

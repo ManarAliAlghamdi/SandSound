@@ -3,73 +3,73 @@ import CoreHaptics
 
 struct GameTutorial: View {
     @EnvironmentObject var viewModel: GameViewModel
+
+    
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
             VStack {
                 if !viewModel.showGame{
-                    
-                    
-                    if viewModel.showLeftArrow {
-                        Image("leftArrow")
-                            .resizable()
-                            .frame(width: 200, height: 120)
-                            .offset(x: viewModel.leftArrowOffset)
-                            .onAppear {
-                                withAnimation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
-                                    viewModel.leftArrowOffset = -30
-                                }
-                                UIAccessibility.post(notification: .layoutChanged, argument: "Swipe left to avoid obstacle")
-                            }
-                            .accessibilityLabel("Swipe left to avoid obstacle")
-                            .transition(.opacity)
-                    } else if viewModel.showRightArrow {
-                        Image("rightArrow")
-                            .resizable()
-                            .frame(width: 200, height: 120)
-                            .offset(x: viewModel.rightArrowOffset)
-                            .onAppear {
-                                withAnimation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
-                                    viewModel.rightArrowOffset = -30
-                                }
-                                UIAccessibility.post(notification: .layoutChanged, argument: "Swipe right to avoid obstacle")
-                            }
-                            .accessibilityLabel("Swipe right to avoid obstacle")
-                            .transition(.opacity)
-                    }
-                }
-                
-                if viewModel.tutrioalComplete {
-                    ZStack{
-                        FullScreenVideoPlayer(videoName: "Win", videoExtension: "mov", isVideoEnded: $viewModel.showGame)
-                            .ignoresSafeArea()
+                    if !viewModel.tutrioalComplete {
                         
-                        VStack {
-                            Spacer()
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    viewModel.tutrioalComplete = false
-                                    viewModel.showGame = true
-                                }) {
-                                    Text("Skip").foregroundColor(.white)
-                                    Image(systemName: "forward.fill").foregroundColor(.white)
+                        if viewModel.showLeftArrow {
+                            Image("leftArrow")
+                                .resizable()
+                                .frame(width: 200, height: 120)
+                                .offset(x: viewModel.leftArrowOffset)
+                                .onAppear {
+                                    withAnimation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
+                                        viewModel.leftArrowOffset = -30
+                                    }
+                                    UIAccessibility.post(notification: .layoutChanged, argument: "Swipe left to avoid obstacle")
                                 }
-                                .padding(.trailing, 30)
-                                .padding(.bottom, 30)
-                            }
+                                .accessibilityLabel("Swipe left to avoid obstacle")
+                                .transition(.opacity)
+                        } else if viewModel.showRightArrow {
+                            Image("rightArrow")
+                                .resizable()
+                                .frame(width: 200, height: 120)
+                                .offset(x: viewModel.rightArrowOffset)
+                                .onAppear {
+                                    withAnimation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
+                                        viewModel.rightArrowOffset = -30
+                                    }
+                                    UIAccessibility.post(notification: .layoutChanged, argument: "Swipe right to avoid obstacle")
+                                }
+                                .accessibilityLabel("Swipe right to avoid obstacle")
+                                .transition(.opacity)
                         }
                     }
                     
+                    if viewModel.tutrioalComplete {
+                        ZStack{
+                            FullScreenVideoPlayer(videoName: "Win", videoExtension: "mov", isVideoEnded: $viewModel.showGame)
+                                .ignoresSafeArea()
+                            
+                            VStack {
+                                Spacer()
+                                HStack {
+                                    Spacer()
+                                    Button(action: {
+                                        viewModel.showGame = true
+                                    }) {
+                                        Text("Skip").foregroundColor(.white)
+                                        Image(systemName: "forward.fill").foregroundColor(.white)
+                                    }
+                                    .padding(.trailing, 30)
+                                    .padding(.bottom, 30)
+                                }
+                            }
+                        }
+                    }
                 } else if viewModel.showGame {
                     Game()
                         .environmentObject(viewModel)
                         .onAppear {
-                            viewModel.switchMode(to: .game, duration: 20)
+                            viewModel.switchMode(to: .game, duration: 1,  backgroundSound: "full-background.mp3")
                         }
                 }
             }
-            
         }
         .simultaneousGesture(
             DragGesture()
@@ -92,7 +92,6 @@ struct GameTutorial: View {
         }
     }
 }
-
 
 #Preview {
     GameTutorial()

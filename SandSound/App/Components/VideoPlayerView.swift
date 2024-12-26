@@ -1,38 +1,33 @@
 import SwiftUI
 import AVKit
 
-struct VideoPlayerView: UIViewControllerRepresentable {
+struct FullScreenVideoPlayer: UIViewControllerRepresentable {
     let videoName: String
-    let onVideoEnd: () -> Void
-    
+    let videoExtension: String
+    @Binding var isVideoEnded: Bool  // Binding to track video end status
+
     func makeUIViewController(context: Context) -> AVPlayerViewController {
-        let playerViewController = AVPlayerViewController()
-        playerViewController.showsPlaybackControls = false
-       
-//      if let url = Bundle.main.url(forResource: videoName, withExtension: "mp4")
-        if let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") {
+        let controller = AVPlayerViewController()
+        
+        if let path = Bundle.main.path(forResource: videoName, ofType: videoExtension) {
+            let url = URL(fileURLWithPath: path)
             let player = AVPlayer(url: url)
-            playerViewController.player = player
+            controller.player = player
+            controller.showsPlaybackControls = false
             
-            NotificationCenter.default.addObserver(
-                forName: .AVPlayerItemDidPlayToEndTime,
-                object: player.currentItem,
-                queue: .main
-            ) { _ in
-                onVideoEnd() 
+            // Observe when the video ends
+            NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
+                                                   object: player.currentItem,
+                                                   queue: .main) { _ in
+                print("Video has ended")
+                isVideoEnded = true  // Update the binding when video ends
             }
             
             player.play()
         }
         
-        return playerViewController
+        return controller
     }
-    
-//    func stopVideo() {
-//        player?.pause()
-//        player?.replaceCurrentItem(with: nil)
-//        player = nil
-//        NotificationCenter.default.post(name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
-//    }
+
     func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
 }

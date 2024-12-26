@@ -3,6 +3,7 @@ import SwiftUI
 
 struct SplashScreen: View {
     @EnvironmentObject var viewModel: GameViewModel
+    @State private var showStartingPage: Bool = false
 
     @State private var opacity = 0.0
 
@@ -11,9 +12,9 @@ struct SplashScreen: View {
             ZStack {
                 Color.black.edgesIgnoringSafeArea(.all)
                 
-                if viewModel.showStartingPage {
-                    StartingPage()
-                } else if !viewModel.showStartingPage{
+                if showStartingPage {
+                    StartingPage().environmentObject(viewModel)
+                } else if !showStartingPage{
                     Image("logo")
                         .resizable()
                         .scaledToFit()
@@ -25,7 +26,7 @@ struct SplashScreen: View {
                             }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                                 withAnimation {
-                                    viewModel.showStartingPage = true
+                                    showStartingPage = true
                                 }
                             }
                         }

@@ -3,28 +3,27 @@ import SwiftUI
 
 struct Game: View {
     @EnvironmentObject var viewModel: GameViewModel
+    @State var showHomePage: Bool = false
+    
     
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
             VStack {
-                if !viewModel.showEndingScene{
+                if !viewModel.showHomePage{
                     
                     if !viewModel.gameOver {
                         
-                        if !viewModel.gameEnds {
-                            Text("Current line: \(viewModel.currentLane)").foregroundStyle(Color.white)
-                            Text("Game Timer: \(viewModel.tempTimer)").foregroundStyle(Color.white)
-                        }
                         if viewModel.gameEnds {
-                            FullScreenVideoPlayer(videoName: "Win", videoExtension: "mov", isVideoEnded: $viewModel.showEndingScene)
+                            FullScreenVideoPlayer(videoName: "Win", videoExtension: "mov", isVideoEnded: $viewModel.showHomePage)
                                 .ignoresSafeArea()
                             VStack {
                                 Spacer()
                                 HStack {
                                     Spacer()
                                     Button(action: {
-                                        viewModel.showEndingScene = true
+                                        viewModel.showHomePage = true
+                                       
                                     }) {
                                         
                                         Text("Skip").foregroundColor(.white)
@@ -38,14 +37,19 @@ struct Game: View {
                     } else if viewModel.gameOver {
                         VStack {
                             Spacer().frame(height: 30)
+
+                            
                             Text(" اركض اسرع المرة الجايه ...")
                                 .foregroundColor(.white)
                                 .italic()
                             
                             Spacer().frame(height: 30)
+                            
 
                                 Button(action: {
-                                    viewModel.restartGame()
+//                                    viewModel.navigateToPlay = true  // Go to main menu
+                                    viewModel.gameOver = false
+                                    viewModel.restartGame(backgroundSound: "full-background.mp3")
                                 }) {
                                     HStack {
                                         Image(systemName: "arrow.clockwise")
@@ -58,10 +62,11 @@ struct Game: View {
                                     .cornerRadius(10)
                                 }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                             }
+
                         .padding(40)
                         .frame(maxWidth: 400)
                         .background(
-                            Image("gameOver")  
+                            Image("gameOver")  // Replace with your image name
                                 .resizable()
                                 .scaledToFill()
                                 .edgesIgnoringSafeArea(.all)
@@ -77,8 +82,9 @@ struct Game: View {
 
                     }
 
-                }else if viewModel.showEndingScene{
+                }else if  viewModel.showHomePage{
                     StartingPage()
+                    
                 }
                 
             }
@@ -86,16 +92,13 @@ struct Game: View {
         .gesture(
             DragGesture()
                 .onEnded { value in
-            if !viewModel.gameOver {
                     let horizontalDistance = value.translation.width
                     if horizontalDistance < -50 {
                         viewModel.handleSwipe(direction: .left)
                     } else if horizontalDistance > 50 {
                         viewModel.handleSwipe(direction: .right)
                     }
-                    
                 }
-            }
         )
     }
 }

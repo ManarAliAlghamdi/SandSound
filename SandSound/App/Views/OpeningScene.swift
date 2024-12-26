@@ -2,45 +2,16 @@
 import SwiftUI
 import AVKit
 
-struct FullScreenVideoPlayer: UIViewControllerRepresentable {
-    let videoName: String
-    let videoExtension: String
-    @Binding var isVideoEnded: Bool  // Binding to track video end status
-
-    func makeUIViewController(context: Context) -> AVPlayerViewController {
-        let controller = AVPlayerViewController()
-        
-        if let path = Bundle.main.path(forResource: videoName, ofType: videoExtension) {
-            let url = URL(fileURLWithPath: path)
-            let player = AVPlayer(url: url)
-            controller.player = player
-            controller.showsPlaybackControls = false
-            
-            // Observe when the video ends
-            NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
-                                                   object: player.currentItem,
-                                                   queue: .main) { _ in
-                print("Video has ended")
-                isVideoEnded = true  // Update the binding when video ends
-            }
-            
-            player.play()
-        }
-        
-        return controller
-    }
-
-    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
-}
 
 struct OpeningScene: View {
     @EnvironmentObject var viewModel: GameViewModel
+    @State var showTutorial: Bool = false
 
     var body: some View {
         NavigationStack {
-            if !viewModel.showTutorial{
+            if !showTutorial{
                 ZStack {
-                    FullScreenVideoPlayer(videoName: "video", videoExtension: "MP4", isVideoEnded: $viewModel.showTutorial)
+                    FullScreenVideoPlayer(videoName: "video", videoExtension: "MP4", isVideoEnded: $showTutorial)
                         .ignoresSafeArea()
                     
                     VStack {
@@ -48,7 +19,7 @@ struct OpeningScene: View {
                         HStack {
                             Spacer()
                             Button(action: {
-                                viewModel.showTutorial = true
+                                showTutorial = true
                             }) {
                                 Text("Skip")
                                     .font(.title2)
@@ -64,11 +35,11 @@ struct OpeningScene: View {
                     }
                 }
               
-            }else if viewModel.showTutorial{
+            }else if showTutorial{
                 GameTutorial()
                     .environmentObject(viewModel)
                     .onAppear {
-                        viewModel.switchMode(to: .tutorial, duration: 10)
+                        viewModel.switchMode(to: .tutorial, duration: 1, backgroundSound: "backgroundSound.wav")
                     }
             }
         }
